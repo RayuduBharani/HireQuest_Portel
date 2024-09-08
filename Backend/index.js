@@ -368,11 +368,11 @@ app.post("/candidate/applyjob/:recruiterId", async (req, res) => {
     }
 })
 
+// FindApplicants 
+
 app.get("/recruiter/applicant/:Urlpath", async (req, res) => {
     await connectDb()
     try {
-        // const token = req.headers.authorization.split(" ")[1]
-        // const decode = jwt.verify(token , "HireQuest")
         const FindJob = await JobModel.findOne({ UrlPath: req.params.Urlpath })
         const FindApplicants = await ApplicantModel.find({ jobId: FindJob._id }).populate("recruiterId").populate("jobId").populate("candidateId")
         if (FindApplicants) {
@@ -383,6 +383,25 @@ app.get("/recruiter/applicant/:Urlpath", async (req, res) => {
     }
 })
 
+// Accept job application 
+
+app.put("/recruiter/acceptJob/:id" , async(req,res)=>{
+    await connectDb()
+    try {
+        const activity = await ApplicantModel.findOne({_id : req.params.id})
+        if(activity){
+            await ApplicantModel.updateOne({_id : activity._id} , {$set : {Pending : false}})
+            const updateActivity = await ApplicantModel.updateOne({_id : activity._id} , {$set : {Accept : true}})
+            res.send({success : true , message : "Applicant Hired"})
+        }
+        else {
+            res.send({success : false , message : "Applicant not found"})
+        }
+    }
+    catch(err){
+        res.send({success : false , message : err.message})
+    }
+})
 
 app.listen(8000, () => {
     console.log('Server Running')
