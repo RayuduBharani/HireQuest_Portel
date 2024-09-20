@@ -11,8 +11,7 @@ import { ArrowUpRightFromSquareIcon, Briefcase, Cake, GraduationCap, Mail, Phone
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Link } from "react-router-dom"
 import { toast } from "./ui/use-toast"
-import { useEffect } from "react"
-
+import { useRef } from "react"
 export default function ViewApplication({ applicants }: { applicants: ICandidateApplication }) {
   async function HandleAcceptJob() {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/recruiter/acceptJob/${applicants._id}`,{
@@ -22,6 +21,7 @@ export default function ViewApplication({ applicants }: { applicants: ICandidate
       }
     })
     const data = await response.json()
+    console.log(data)
     if(data.success){
       toast({
         title : "Your Accepted the Candidate"
@@ -32,6 +32,15 @@ export default function ViewApplication({ applicants }: { applicants: ICandidate
         title : "Your are rejected the Candidate",
         variant : "destructive"
       })
+    }
+  }
+
+  const Desabled = useRef<HTMLButtonElement | null>(null)
+
+  const handleClick = ()=>{
+    if(Desabled.current){
+      Desabled.current.disabled = true
+      Desabled.current.classList.add('cursor-not-allowed', 'opacity-50');
     }
   }
 
@@ -49,7 +58,10 @@ export default function ViewApplication({ applicants }: { applicants: ICandidate
               <a href={`mailto:${applicants.candidateId.emailAddress}`}>
                 <Button className="p-5" variant="outline"><Mail className="size-4 mr-2" />Send Email</Button>
               </a>
-              <Button disabled={applicants.Accept} onClick={HandleAcceptJob}><ArrowUpRightFromSquareIcon className="size-4 mr-2" />Hire Candidate</Button>
+              <Button ref={Desabled} disabled={applicants.Accept} onClick={()=>{
+                handleClick()
+                HandleAcceptJob()
+              }}><ArrowUpRightFromSquareIcon className="size-4 mr-2" />Hire Candidate</Button>
             </div>
           </DialogTitle>
           <DialogDescription>
@@ -124,13 +136,13 @@ export default function ViewApplication({ applicants }: { applicants: ICandidate
 
                       <div className="flex justify-center gap-3 font-semibold">
                         <Phone />
-                        <p className="truncate text-sky-400">98697879878</p>
+                        <p className="truncate text-sky-400">{applicants.candidateId.phoneNumber}</p>
                       </div>
 
                       <div className="flex justify-center gap-3 font-semibold">
                         <a href={applicants.candidateId.portfolioLinks[0]} target="_blank" className="flex justify-center gap-3">
                           <Briefcase />
-                          <p className="truncate text-sky-400 cursor-pointer">http:portfolio.com</p>
+                          <p className="truncate text-sky-400 cursor-pointer">{applicants.candidateId.portfolioLinks[0]}</p>
                         </a>
                       </div>
                     </div>

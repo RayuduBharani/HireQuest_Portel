@@ -13,6 +13,7 @@ export default function CandidateJobData({ PostInfo }: { PostInfo: IrecruiterJob
   if (cookie) {
     CookieData = JSON.parse(cookie);
   }
+  console.log(PostInfo)
   const [open, setOpen] = useState<boolean>(false);
   const [note, setNote] = useState<string>("");
 
@@ -22,7 +23,7 @@ export default function CandidateJobData({ PostInfo }: { PostInfo: IrecruiterJob
       Note: note
     };
     try {
-      const response = await fetch(`http://localhost:8000/candidate/applyjob/${PostInfo?.recruiterId?._id}`, {
+      const response = await fetch(`http://localhost:8000/candidate/applyjob/${PostInfo?._id}`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${CookieData?.token}`,
@@ -31,7 +32,6 @@ export default function CandidateJobData({ PostInfo }: { PostInfo: IrecruiterJob
         body: JSON.stringify(NewNote),
       })
       const data = await response.json();
-      console.log(data);
       if (data.success) {
         setNote('')
         toast({

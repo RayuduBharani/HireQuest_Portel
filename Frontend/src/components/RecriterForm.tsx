@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import app from "@/lib/firebase";
 import { Progress } from "./ui/progress";
+import { Textarea } from "./ui/textarea";
 
 export default function RecruiterForm() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ export default function RecruiterForm() {
     const currentCompany = formData.get("companyName") as string;
     const currentRole = formData.get("companyRole") as string;
     const companyLogo = formData.get("companyLogo") as File;
+    const companyDescription = formData.get("companyDescription") as string
     if (companyLogo) {
       const storage = getStorage(app);
       const storageRef = ref(storage, `logos/${Date.now()}_${companyLogo.name}`);
@@ -45,6 +47,7 @@ export default function RecruiterForm() {
             currentCompany,
             currentRole,
             companyLogo: logoURL,
+            companyDescription
           };
 
           const response = await fetch("http://localhost:8000/onboard-recruiter", {
@@ -91,7 +94,14 @@ export default function RecruiterForm() {
         <Label htmlFor="companyRole" className="ml-1">
           Current Role
         </Label>
-        <Input id="companyRole" name="companyRole" />
+        <Textarea id="companyRole" name="companyRole" />
+      </div>
+
+      <div>
+        <Label htmlFor="companyDescription" className="ml-1">
+          Company Description
+        </Label>
+        <Input id="companyDescription" name="companyDescription" />
       </div>
 
       <div>

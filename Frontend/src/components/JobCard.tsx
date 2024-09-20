@@ -29,10 +29,17 @@ export default function JobCard({ RecriterJobs }: IJobCardProps) {
                             <div className="grid grid-cols-2 justify-between items-center mt-5 gap-2">
                                 {
                                     CookieData?.role == "recruiter" ? (
-                                        <Button asChild><Link to={`/jobs/Info/Applicants/${jobs.UrlPath}`}>Applicants</Link></Button>
+                                        <>
+                                            <Button asChild><Link to={`/jobs/Info/Applicants/${jobs.UrlPath}`}>Applicants</Link></Button>
+                                            <Button className="w-full" asChild><Link to={`/jobs/Info/${jobs.UrlPath}`}>Show Detailes</Link></Button>
+                                        </>
                                     ) : null
                                 }
-                                <Button className="w-full" asChild><Link to={`/jobs/Info/${jobs.UrlPath}`}>Show Detailes</Link></Button>
+                                {
+                                    CookieData?.role == "candidate" ? (
+                                        <Button className="w-full col-span-2" asChild><Link to={`/jobs/Info/${jobs.UrlPath}`}>Show Detailes</Link></Button>
+                                    ) : null
+                                }
                             </div>
                         </div>
                     )

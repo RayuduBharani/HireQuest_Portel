@@ -195,3 +195,25 @@ interface ICandidateApplication {
     updatedAt: string;
     __v: number;
 }
+
+interface IAccountData {
+    _id: string;
+    companyLogo: string;
+    createdAt: string;
+    currentCompany: string;
+    currentRole: string;
+    name: string;
+    updatedAt: string;
+    userId: {
+        image: string;
+        role: string;
+        useremail: string;
+        username: string;
+        userpassword: string;
+        updatedAt: string;
+        createdAt: string;
+        _id : string;
+    },
+    companyDescription : string;
+    __v: number;
+}

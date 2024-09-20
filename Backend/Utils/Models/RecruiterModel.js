@@ -20,6 +20,10 @@ const RecruiterSchema = mongoose.Schema({
     },
     companyLogo : {
         type : String
+    },
+    companyDescription : {
+        type : String,
+        required : true
     }
 } ,{timestamps : true})
 

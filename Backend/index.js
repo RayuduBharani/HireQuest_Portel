@@ -155,7 +155,8 @@ app.post("/onboard-recruiter", async (req, res) => {
             name: req.body.name,
             currentRole: req.body.currentRole,
             currentCompany: req.body.currentCompany,
-            companyLogo: req.body.companyLogo
+            companyLogo: req.body.companyLogo,
+            companyDescription: req.body.companyDescription
         })
 
         const ChangeRole = await UserModel.findOne({ _id: decoded.userId });
@@ -208,8 +209,9 @@ app.post("/onboard-candidate", async (req, res) => {
             availabilityToStart: CandidateData.availabilityToStart,
             personalStatement: CandidateData.personalStatement,
             role: "candidate",
-            ProfileImage : decode.image,
-            gender : CandidateData.gender
+            ProfileImage: decode.image,
+            gender: CandidateData.gender,
+            OriginalName: decode.username
         })
         const FindCandidate = await UserModel.findOne({ _id: NewCandidateData.userId })
         if (FindCandidate) {
@@ -338,7 +340,7 @@ app.get("/recruiter/postinfo/:id", async (req, res) => {
 
 // Apply a job - candidate
 
-app.post("/candidate/applyjob/:recruiterId", async (req, res) => {
+app.post("/candidate/applyjob/:jobId", async (req, res) => {
     await connectDb()
     try {
         const token = req.headers.authorization.split(" ")[1]
@@ -347,15 +349,15 @@ app.post("/candidate/applyjob/:recruiterId", async (req, res) => {
         if (!FindCandidateId) {
             res.send({ success: false, message: "Can't find candidateId" })
         }
-        const FindJobForApplication = await JobModel.findOne({ recruiterId: req.params.recruiterId })
+        const FindJobForApplication = await JobModel.findOne({ _id: req.params.jobId })
         const NewJobApplicationData = new ApplicantModel({
             candidateId: FindCandidateId._id,
-            recruiterId: req.params.recruiterId,
-            jobId: FindJobForApplication._id,
+            recruiterId: FindJobForApplication.recruiterId,
+            jobId: req.params.jobId,
             Note: req.body.Note
         })
         if (FindJobForApplication) {
-            await JobModel.updateOne({ _id: FindJobForApplication._id }, { $set: { Apllications: NewJobApplicationData } })
+            // await JobModel.updateOne({ _id: FindJobForApplication._id }, { $set: { Apllications: NewJobApplicationData } })
             await NewJobApplicationData.save()
             res.send({ success: true, message: "Congratulations for Apply the job" })
         }
@@ -385,21 +387,74 @@ app.get("/recruiter/applicant/:Urlpath", async (req, res) => {
 
 // Accept job application 
 
-app.put("/recruiter/acceptJob/:id" , async(req,res)=>{
+app.put("/recruiter/acceptJob/:id", async (req, res) => {
     await connectDb()
     try {
-        const activity = await ApplicantModel.findOne({_id : req.params.id})
-        if(activity){
-            await ApplicantModel.updateOne({_id : activity._id} , {$set : {Pending : false}})
-            const updateActivity = await ApplicantModel.updateOne({_id : activity._id} , {$set : {Accept : true}})
-            res.send({success : true , message : "Applicant Hired"})
+        const activity = await ApplicantModel.findOne({ _id: req.params.id })
+        if (activity) {
+            await ApplicantModel.updateOne({ _id: activity._id }, { $set: { Pending: false } })
+            const updateActivity = await ApplicantModel.updateOne({ _id: activity._id }, { $set: { Accept: true } })
+            res.send({ success: true, message: "Applicant Hired" })
         }
         else {
-            res.send({success : false , message : "Applicant not found"})
+            res.send({ success: false, message: "Applicant not found" })
         }
     }
-    catch(err){
-        res.send({success : false , message : err.message})
+    catch (err) {
+        res.send({ success: false, message: err.message })
+    }
+})
+
+
+// Account page 
+
+app.get("/recruiter/Account", async (req, res) => {
+    await connectDb()
+    try {
+        const token = req.headers.authorization.split(" ")[1]
+        const decode = jwt.verify(token, "HireQuest")
+        const FindRecruiter = await RecruiterModel.findOne({ userId: decode.userId }).populate("userId")
+        if (FindRecruiter) {
+            res.send(FindRecruiter)
+        }
+        else {
+            res.send({ success: false, message: "Recruiter Not Found" })
+        }
+    } catch (err) {
+        res.send({ success: false, message: err.message })
+    }
+})
+
+app.get("/candidate/Account", async (req, res) => {
+    await connectDb()
+    try {
+        const token = req.headers.authorization.split(" ")[1]
+        const decode = jwt.verify(token, "HireQuest")
+        const FindCandidate = await CandidateModel.findOne({ userId: decode.userId }).populate("userId")
+        if (FindCandidate) {
+            res.send(FindCandidate)
+        }
+        else {
+            res.send({ success: false, message: "Candidate Not Found" })
+        }
+    } catch (err) {
+        res.send({ success: false, message: err.message })
+    }
+})
+
+// update recruiter profile 
+
+app.put("/recruiter/userprofile", async (req, res) => {
+    await connectDb()
+    try {
+        const token = req.headers.authorization.split(" ")[1]
+        const decode = jwt.verify(token, "HireQuest")
+        console.log(decode)
+        const FindRecruiterDetailes = await RecruiterModel.findOne({ userId: decode.userId })
+        console.log(FindRecruiterDetailes)
+    }
+    catch (err) {
+        res.send({ success: false, message: err.message })
     }
 })
 

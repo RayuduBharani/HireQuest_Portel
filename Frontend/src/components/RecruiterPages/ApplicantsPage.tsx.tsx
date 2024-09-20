@@ -17,6 +17,7 @@ export default function ApplicantsPage() {
             .then(response => response.json())
             .then((data) => {
                 setApplicantsData(data)
+                console.log(data)
             })
             .catch(err => {
                 console.log(err)

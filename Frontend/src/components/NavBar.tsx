@@ -9,7 +9,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { AlignLeft } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
 export default function NavBar() {
@@ -23,17 +23,38 @@ export default function NavBar() {
   };
 
   const cookie = Cookies.get('bharani')
+  let cookieData: IcookieData | null = null
   if (cookie) {
-    const cookieData : IcookieData = JSON.parse(cookie)
-    const  role = cookieData.role
+    cookieData = JSON.parse(cookie)
+    const role = cookieData?.role
     isCandidate = role === 'candidate'
   }
+
+  const [Account, setAccount] = useState<IAccountData>()
+
+  useEffect(() => {
+    fetch(cookieData?.role == "recruiter" ? 
+      "http://localhost:8000/recruiter/Account" : 
+      "http://localhost:8000/candidate/Account", {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${cookieData?.token}`
+      }
+    })
+      .then(response => response.json())
+      .then((data) => {
+        setAccount(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
 
   return (
     <div className="w-full absolute h-[75px] flex justify-around max-sm:pr-0">
       <Sheet open={Open} onOpenChange={setOpen}>
-        
+
         <div className="hidden max-sm:flex max-sm:items-center">
           <SheetTrigger><AlignLeft className="hidden max-sm:flex" /></SheetTrigger>
         </div>
@@ -74,8 +95,8 @@ export default function NavBar() {
             isPublicPage ? <ModeToggle /> : (
               isCandidate ?
                 <>
-                  <div className="w-10 h-10 bg-foreground mr-5 rounded-full max-sm:w-[2.5rem] max-sm:h-[2.5rem] max-sm:ml-0 text-white">
-
+                  <div className="cursor-pointer w-10 h-10 mr-5 rounded-full max-sm:w-[2.5rem] max-sm:h-[2.5rem] max-sm:ml-0">
+                    <img className="w-full h-full rounded-full" src={Account?.userId.image} alt="" />
                   </div>
                   <div className="max-sm:hidden">
                     <ModeToggle />
@@ -83,8 +104,8 @@ export default function NavBar() {
                 </>
                 :
                 <>
-                  <div className="w-10 h-10 bg-foreground mr-5 rounded-full max-sm:w-[2.5rem] max-sm:h-[2.5rem] max-sm:ml-0 text-white">
-
+                  <div className="cursor-pointer w-10 h-10 bg-foreground mr-5 rounded-full max-sm:w-[2.5rem] max-sm:h-[2.5rem] max-sm:ml-0 text-white">
+                    <img className="w-full h-full rounded-full" src={Account?.userId.image} alt="" />
                   </div>
                   <div className="max-sm:hidden">
                     <ModeToggle />

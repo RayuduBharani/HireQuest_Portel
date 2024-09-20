@@ -96,7 +96,11 @@ const CandidateSchema = new mongoose.Schema({
         enum: ["Male", "Female", "TransGender"],
         type: String
     },
-
+    OriginalName: {
+        required: true,
+        type: String
+    }
+    ,
     // Additional Information
     personalStatement: String
 }, { timestamps: true });
