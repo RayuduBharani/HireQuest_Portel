@@ -1,5 +1,4 @@
 import { MoonStar, SunMedium } from "lucide-react"
-import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -13,17 +12,10 @@ export function ModeToggle() {
   const { setTheme } = useTheme()
 
   return (
-    <motion.div
-      initial={{ scale: 0 }}
-      animate={{ rotate: 360, scale: 1 }}
-      transition={{
-        type: "spring",
-        stiffness: 260,
-        damping: 20
-      }}>
+    <div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="default" size="icon">
+          <Button variant="ghost" size="icon">
             <SunMedium className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
             <MoonStar className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
             <span className="sr-only">Toggle theme</span>
@@ -41,6 +33,6 @@ export function ModeToggle() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </motion.div>
+    </div>
   )
 }

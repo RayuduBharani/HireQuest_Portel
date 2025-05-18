@@ -8,6 +8,36 @@ interface WorkExperience {
 interface IJobCardProps {
     RecriterJobs: IrecruiterJobData[] | undefined
 }
+interface ICompanyJobs {
+  _id: string;
+  JobTitle: string;
+  CompanyName: string;
+  Location: string;
+  SalaryRange: string;
+  JobType: string;
+  RequiredSkills: string[];
+  ExperienceLevel: string;
+  ApplicationDeadline: string;
+  JobDescription: string;
+  UrlPath: string;
+  createdAt: string;
+  recruiterId: {
+    _id: string;
+    userId: string;
+    name: string;
+    currentRole: string;
+    currentCompany: string;
+    companyLogo: string;
+    companyDescription: string;
+  };
+  UserId: {
+    _id: string;
+    username: string;
+    useremail: string;
+    image: string;
+  };
+}
+
 
 interface CandidateFormData {
     gender : string
@@ -52,6 +82,10 @@ interface Iitmes {
 }
 
 interface IrecruiterJobData {
+    LastDate: string | number | Date;
+    ApplicationsReceived: number;
+    Responsibilities: string[];
+    Requirements: string[];
     _id: string;
     UserId: {
         _id: string;
@@ -120,7 +154,7 @@ interface Applications {
         updatedAt: string;
         __v: number;
     };
-}[]
+}
 
 
 interface ICandidateApplication {
@@ -160,6 +194,7 @@ interface ICandidateApplication {
         gender : string
     };
     jobId: {
+        UserId: any;
         JobTitle: string;
         CompanyName: string;
         Location: string;
@@ -216,4 +251,24 @@ interface IAccountData {
     },
     companyDescription : string;
     __v: number;
+}
+
+interface CookieData {
+  success: boolean;
+  role: string;
+  token: string;
+}
+
+interface FeedPost {
+  _id: string;
+  userId: {
+    _id: string;
+    username: string;
+    image: string;
+    role: string;
+  };
+  content: string;
+  image?: string;
+  createdAt: string;
+  updatedAt: string;
 }

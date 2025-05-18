@@ -3,14 +3,16 @@ import { ModeToggle } from "./mode-toggle";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { AlignLeft } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { cn } from "@/lib/utils";
+import { Button } from "./ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export default function NavBar() {
   const location = useLocation();
@@ -48,111 +50,259 @@ export default function NavBar() {
       .catch((err) => {
         console.log(err)
       })
-  }, [])
-
+  }, [cookieData?.role, cookieData?.token])
 
   return (
-    <div className="w-full absolute h-[75px] flex justify-around max-sm:pr-0">
-      <Sheet open={Open} onOpenChange={setOpen}>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b">
+      <nav className="container mx-auto px-4 h-16">
+        <div className="flex items-center justify-between h-full">
+          {/* Logo */}
+          <div className="flex items-center">
+            {/* Mobile Menu Trigger - Only visible on sm-md */}
+            <Sheet open={Open} onOpenChange={setOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden -ml-2 mr-2">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
 
-        <div className="hidden max-sm:flex max-sm:items-center">
-          <SheetTrigger><AlignLeft className="hidden max-sm:flex" /></SheetTrigger>
-        </div>
-        <div className="w-fit h-full flex justify-center items-center text-primary max-sm:w-[45%]">
-          <p className="text-2xl font-bold">HireQuest</p>
-        </div>
+              <NavLink to="/home" className="text-xl font-bold text-primary">
+                HireQuest
+              </NavLink>
 
-        <div className="w-[55%] h-full max-sm:hidden">
-          <ul className="flex items-center w-[100%] font-medium text-md text-neutral-500 h-full">
-            {
-              isPublicPage ? (
-                <div className="flex w-[50%] justify-around ml-16 font-normal text-sm">
-                  <NavLink to={'/sign-in'} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Login</li></NavLink>
-                  <NavLink to={'/sign-up'} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Register</li></NavLink>
-                </div>
-              ) : isCandidate ? (
-                <div className="w-full text-sm font-normal flex justify-around">
-                  <NavLink to={"/home"} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Home</li></NavLink>
-                  <NavLink to={'/jobs'} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Jobs</li></NavLink>
-                  <NavLink to={'/companies'} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Companies</li></NavLink>
-                  <NavLink to={'/feed'} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Feed</li></NavLink>
-                  <NavLink to={'/activity'} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Activity</li></NavLink>
-                  <NavLink to={'/account'} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer ">Account</li></NavLink>
-                </div>
-              ) : (
-                <div className="w-[95%] text-sm font-normal flex justify-around">
-                  <NavLink to={"/home"} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Home</li></NavLink>
-                  <NavLink to={'/jobs'} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Jobs</li></NavLink>
-                  <NavLink to={'/feed'} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Feed</li></NavLink>
-                  <NavLink to={'/account'} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer ">Account</li></NavLink>
-                </div>
-              )
-            }
-          </ul>
-        </div>
-        <div className="w-fit h-full flex justify-center items-center max-sm:w-[11%]">
-          {
-            isPublicPage ? <ModeToggle /> : (
-              isCandidate ?
-                <>
-                  <div className="cursor-pointer w-10 h-10 mr-5 rounded-full max-sm:w-[2.5rem] max-sm:h-[2.5rem] max-sm:ml-0">
-                    <img className="w-full h-full rounded-full" src={Account?.userId.image} alt="" />
-                  </div>
-                  <div className="max-sm:hidden">
-                    <ModeToggle />
-                  </div>
-                </>
-                :
-                <>
-                  <div className="cursor-pointer w-10 h-10 bg-foreground mr-5 rounded-full max-sm:w-[2.5rem] max-sm:h-[2.5rem] max-sm:ml-0 text-white">
-                    <img className="w-full h-full rounded-full" src={Account?.userId.image} alt="" />
-                  </div>
-                  <div className="max-sm:hidden">
-                    <ModeToggle />
-                  </div>
-                </>
-            )
-          }
-        </div>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle className="text-primary font-bold pl-4 pt-5 text-center">Welcome To HireQuest</SheetTitle>
-            <SheetDescription asChild>
-              <div className="w-full h-full flex flex-col">
-                <ul className="w-full font-medium text-md text-neutral-500 h-full flex justify-center">
-                  {
-                    isPublicPage ? (
-                      <div className="w-[63%] flex flex-col justify-around gap-5 mt-10">
-                        <NavLink to={'/sign-in'} onClick={handleNavLinkClick} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Login</li></NavLink>
-                        <NavLink to={'/sign-up'} onClick={handleNavLinkClick} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Register</li></NavLink>
-                      </div>
-                    ) : isCandidate ? (
-                      <div className="w-[63%] text-sm font-normal flex flex-col items-center gap-5 mt-5">
-                        <NavLink to={"/home"} onClick={handleNavLinkClick} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Home</li></NavLink>
-                        <NavLink to={'/jobs'} onClick={handleNavLinkClick} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Jobs</li></NavLink>
-                        <NavLink to={'companies'} onClick={handleNavLinkClick} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Companies</li></NavLink>
-                        <NavLink to={'/feed'} onClick={handleNavLinkClick} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Feed</li></NavLink>
-                        <NavLink to={'/activity'} onClick={handleNavLinkClick} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Activity</li></NavLink>
-                        <NavLink to={'/account'} onClick={handleNavLinkClick} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer ">Account</li></NavLink>
-                        <ModeToggle />
-                      </div>
-                    ) : (
-                      <div className="w-[30%] text-sm font-normal flex flex-col gap-5 mt-5 items-center">
-                        <NavLink to={"/home"} onClick={handleNavLinkClick} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Home</li></NavLink>
-                        <NavLink to={'/jobs'} onClick={handleNavLinkClick} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Jobs</li></NavLink>
-                        <NavLink to={'/feed'} onClick={handleNavLinkClick} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer">Feed</li></NavLink>
-                        <NavLink to={'/account'} onClick={handleNavLinkClick} className={({ isActive }) => isActive ? "text-foreground font-bold" : ""}><li className="cursor-pointer ">Account</li></NavLink>
-                        <ModeToggle />
-                      </div>
-                    )
-                  }
-                </ul>
-              </div>
-            </SheetDescription>
-          </SheetHeader>
-        </SheetContent>
-      </Sheet>
-    </div>
+              {/* Sheet Content - Only for sm-md */}
+              <SheetContent side="left" className="w-[280px] sm:w-[350px] md:hidden">
+                <SheetHeader className="text-left">
+                  <SheetTitle className="text-lg font-bold text-primary">
+                    HireQuest
+                  </SheetTitle>
+                </SheetHeader>
 
+                <nav className="mt-8 flex flex-col space-y-1">
+                  {isPublicPage ? (
+                    <>
+                      <NavLink
+                        to="/sign-in"
+                        onClick={handleNavLinkClick}
+                        className={({ isActive }) =>
+                          cn("px-4 py-2 text-sm rounded-md transition-colors",
+                            isActive 
+                              ? "bg-primary/10 text-primary font-medium" 
+                              : "text-muted-foreground hover:bg-accent"
+                          )
+                        }
+                      >
+                        Login
+                      </NavLink>
+                      <NavLink
+                        to="/sign-up"
+                        onClick={handleNavLinkClick}
+                        className={({ isActive }) =>
+                          cn("px-4 py-2 text-sm rounded-md transition-colors",
+                            isActive 
+                              ? "bg-primary/10 text-primary font-medium" 
+                              : "text-muted-foreground hover:bg-accent"
+                          )
+                        }
+                      >
+                        Register
+                      </NavLink>
+                    </>
+                  ) : isCandidate ? (
+                    <>
+                      <NavLink
+                        to="/home"
+                        onClick={handleNavLinkClick}
+                        className={({ isActive }) =>
+                          cn("px-4 py-2 text-sm rounded-md transition-colors flex items-center",
+                            isActive 
+                              ? "bg-primary/10 text-primary font-medium" 
+                              : "text-muted-foreground hover:bg-accent"
+                          )
+                        }
+                      >
+                        Home
+                      </NavLink>
+                      <NavLink
+                        to="/jobs"
+                        onClick={handleNavLinkClick}
+                        className={({ isActive }) =>
+                          cn("px-4 py-2 text-sm rounded-md transition-colors flex items-center",
+                            isActive 
+                              ? "bg-primary/10 text-primary font-medium" 
+                              : "text-muted-foreground hover:bg-accent"
+                          )
+                        }
+                      >
+                        Jobs
+                      </NavLink>
+                      <NavLink
+                        to="/companies"
+                        onClick={handleNavLinkClick}
+                        className={({ isActive }) =>
+                          cn("px-4 py-2 text-sm rounded-md transition-colors flex items-center",
+                            isActive 
+                              ? "bg-primary/10 text-primary font-medium" 
+                              : "text-muted-foreground hover:bg-accent"
+                          )
+                        }
+                      >
+                        Companies
+                      </NavLink>
+                      <NavLink
+                        to="/feed"
+                        onClick={handleNavLinkClick}
+                        className={({ isActive }) =>
+                          cn("px-4 py-2 text-sm rounded-md transition-colors flex items-center",
+                            isActive 
+                              ? "bg-primary/10 text-primary font-medium" 
+                              : "text-muted-foreground hover:bg-accent"
+                          )
+                        }
+                      >
+                        Feed
+                      </NavLink>
+                      <NavLink
+                        to="/activity"
+                        onClick={handleNavLinkClick}
+                        className={({ isActive }) =>
+                          cn("px-4 py-2 text-sm rounded-md transition-colors flex items-center",
+                            isActive 
+                              ? "bg-primary/10 text-primary font-medium" 
+                              : "text-muted-foreground hover:bg-accent"
+                          )
+                        }
+                      >
+                        Activity
+                      </NavLink>
+                    </>
+                  ) : (
+                    <>
+                      <NavLink
+                        to="/home"
+                        onClick={handleNavLinkClick}
+                        className={({ isActive }) =>
+                          cn("px-4 py-2 text-sm rounded-md transition-colors flex items-center",
+                            isActive 
+                              ? "bg-primary/10 text-primary font-medium" 
+                              : "text-muted-foreground hover:bg-accent"
+                          )
+                        }
+                      >
+                        Home
+                      </NavLink>
+                      <NavLink
+                        to="/jobs"
+                        onClick={handleNavLinkClick}
+                        className={({ isActive }) =>
+                          cn("px-4 py-2 text-sm rounded-md transition-colors flex items-center",
+                            isActive 
+                              ? "bg-primary/10 text-primary font-medium" 
+                              : "text-muted-foreground hover:bg-accent"
+                          )
+                        }
+                      >
+                        Jobs
+                      </NavLink>
+                      <NavLink
+                        to="/feed"
+                        onClick={handleNavLinkClick}
+                        className={({ isActive }) =>
+                          cn("px-4 py-2 text-sm rounded-md transition-colors flex items-center",
+                            isActive 
+                              ? "bg-primary/10 text-primary font-medium" 
+                              : "text-muted-foreground hover:bg-accent"
+                          )
+                        }
+                      >
+                        Feed
+                      </NavLink>
+                    </>
+                  )}
+                  {!isPublicPage && (
+                    <NavLink
+                      to="/account"
+                      onClick={handleNavLinkClick}
+                      className={({ isActive }) =>
+                        cn("px-4 py-2 text-sm rounded-md transition-colors flex items-center",
+                          isActive 
+                            ? "bg-primary/10 text-primary font-medium" 
+                            : "text-muted-foreground hover:bg-accent"
+                        )
+                      }
+                    >
+                      Account
+                    </NavLink>
+                  )}
+                </nav>
+
+                <div className="absolute bottom-4 left-4">
+                  <ModeToggle />
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+
+          {/* Desktop Navigation - Hidden on sm-md */}
+          <div className="hidden md:flex items-center space-x-6">
+            {isPublicPage ? (
+              <>
+                <Button variant="ghost" asChild>
+                  <NavLink to="/sign-in">Login</NavLink>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <NavLink to="/sign-up">Register</NavLink>
+                </Button>
+              </>
+            ) : isCandidate ? (
+              <>
+                <Button variant="ghost" asChild>
+                  <NavLink to="/home">Home</NavLink>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <NavLink to="/jobs">Jobs</NavLink>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <NavLink to="/companies">Companies</NavLink>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <NavLink to="/feed">Feed</NavLink>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <NavLink to="/activity">Activity</NavLink>
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="ghost" asChild>
+                  <NavLink to="/home">Home</NavLink>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <NavLink to="/jobs">Jobs</NavLink>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <NavLink to="/feed">Feed</NavLink>
+                </Button>
+              </>
+            )}
+          </div>
+
+          {/* User Menu & Theme Toggle */}
+          <div className="flex items-center space-x-4">
+            {!isPublicPage && (
+              <NavLink to="/account">
+                <Avatar className="h-9 w-9">
+                  <AvatarImage src={Account?.userId.image} alt="Profile" />
+                  <AvatarFallback>
+                    {Account?.userId?.username?.[0]?.toUpperCase() || 'U'}
+                  </AvatarFallback>
+                </Avatar>
+              </NavLink>
+            )}
+            <ModeToggle />
+          </div>
+        </div>
+      </nav>
+    </header>
   );
 }

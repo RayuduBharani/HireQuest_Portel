@@ -15,20 +15,21 @@ import NotFound from "./Pages/NotFound";
 import Postjob from "./components/Postjob";
 import Jobinfo from "./components/RecruiterPages/Jobinfo";
 import ApplicantsPage from "./components/RecruiterPages/ApplicantsPage.tsx";
+import CompanyJobs from "./components/CandidatePages/Companies/companyJobs";
 
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
   const showNav = location.pathname === "/onboard";
-
   useEffect(() => {
     const cookie = Cookies.get('bharani');
     if (cookie) {
       const cookieData = JSON.parse(cookie);
       if (cookieData.role == null) {
         navigate('/onboard');
-      } else if (cookieData.role != null) {
+      } 
+      else if (cookieData.role != null) {
         if (location.pathname === "/sign-in") {
           navigate('/home');
         }
@@ -36,10 +37,11 @@ export default function App() {
           navigate('/home');
         }
       }
-    } else {
+    } 
+    else {
       navigate('/sign-in');
     }
-  }, []);
+  }, [navigate, location.pathname]);
 
   return (
     <div className="h-screen w-full relative bg-cover bg-center bg-no-repeat max-sm:h-svh scrollbar-thin scrollbar-none overflow-auto">
@@ -51,7 +53,7 @@ export default function App() {
           <Route path="/onboard" element={<Onboard />} />
           <Route path="/" element={<Home />} />
 
-          <Route path="/jobs" element={<Jobs />} ></Route>
+          <Route path="/jobs" element={<Jobs />} />
           <Route path="/jobs/post-job" element={<Postjob />} />
           <Route path="jobs/Info/:id" element={<Jobinfo />} />
           <Route path="/jobs/Info/Applicants/:recruiterId" element={<ApplicantsPage/>}/>
@@ -59,8 +61,8 @@ export default function App() {
           <Route path="/Activity" element={<Activity />} />
           <Route path="/Feed" element={<Feed />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/Account" element={<Account />} />
-          <Route path="/companies" element={<Companies />} />
+          <Route path="/Account" element={<Account />} />          <Route path="/companies" element={<Companies />} />
+          <Route path="/company/:id/jobs" element={<CompanyJobs />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

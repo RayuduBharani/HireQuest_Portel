@@ -1,6 +1,6 @@
 import JobCard from "../JobCard";
-import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
+import LoadingComponent from "../Loading";
 
 interface Data {
     Loading: boolean,
@@ -9,26 +9,31 @@ interface Data {
 
 export default function CandidateDashboard({ Loading, RecriterJobs }: Data) {
     return (
-        <div className="w-full h-screen pt-[75px] flex justify-center items-center">
-            <div className="w-[91%] h-[90%] hide-scrollbar">
-                <div className="w-full h-fit flex justify-between items-center">
-                    <p className="font-bold text-xl">Job DashBoard</p>
-                    <Button>Filter</Button>
-                </div>
-                <Separator className="mt-2 bg-primary" />
+        <div className="container mx-auto px-4 py-6 mt-16">
+            <div className="space-y-6">
+                {/* Header Section */}                <div className="flex flex-col space-y-4">
+                    <div className="flex items-center justify-between">
+                        <h1 className="text-2xl font-semibold tracking-tight">Available Positions</h1>
+                    </div>
+                </div>                <Separator className="my-6" />
 
-                {
-                    Loading ?
-                        <p className="">Loading . . .</p>
-                        : RecriterJobs?.length ?
-                            <div className="hide-scrollbar py-10 w-full h-[90%] grid gap-5 grid-cols-3 overflow-y-scroll max-sm:grid-cols-1 max-md:grid-cols-2 max-lg:grid-cols-3">
-                                <JobCard RecriterJobs={RecriterJobs} />
-                            </div>
-                            :
-                            <div className="hide-scrollbar w-full h-[90%] flex justify-center items-center">
-                                <p className="">No Jobs Availble</p>
-                            </div>
-                }
+                {/* Jobs Grid */}
+                <div className="min-h-[calc(100vh-240px)]">
+                    {Loading ? (
+                        <div className="flex items-center justify-center h-[200px]">
+                            <LoadingComponent />
+                        </div>
+                    ) : RecriterJobs?.length ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-8">
+                            <JobCard RecriterJobs={RecriterJobs} />
+                        </div>
+                    ) : (
+                        <div className="flex flex-col items-center justify-center h-[400px] text-muted-foreground">
+                            <p className="text-lg">No jobs available at the moment</p>
+                            <p className="text-sm mt-2">Check back later for new opportunities</p>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     )
