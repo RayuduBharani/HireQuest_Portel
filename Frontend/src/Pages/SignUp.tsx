@@ -21,7 +21,7 @@ export default function SignUpPage() {
       userpassword : password
     }
     
-    const response = await fetch("http://localhost:8000/signup", {
+    const response = await fetch("https://hirequest-portel-1.onrender.com/signup", {
       method : "POST" ,
       headers : {
         "Content-Type" : "application/json"

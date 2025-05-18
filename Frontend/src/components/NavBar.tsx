@@ -36,8 +36,8 @@ export default function NavBar() {
 
   useEffect(() => {
     fetch(cookieData?.role == "recruiter" ? 
-      "http://localhost:8000/recruiter/Account" : 
-      "http://localhost:8000/candidate/Account", {
+      "https://hirequest-portel-1.onrender.com/recruiter/Account" : 
+      "https://hirequest-portel-1.onrender.com/candidate/Account", {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${cookieData?.token}`

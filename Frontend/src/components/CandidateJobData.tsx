@@ -51,7 +51,7 @@ export default function CandidateJobData({ PostInfo }: Props) {
             
             const cookieData = JSON.parse(cookies);
             
-            const response = await fetch(`http://localhost:8000/candidate/applyjob/${PostInfo._id}`, {
+            const response = await fetch(`https://hirequest-portel-1.onrender.com/candidate/applyjob/${PostInfo._id}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

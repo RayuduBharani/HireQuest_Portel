@@ -20,7 +20,7 @@ export default function ApplicantsPage() {
         if (!recruiterId) return;
 
         setLoading(true);
-        fetch(`http://localhost:8000/recruiter/applicant/${recruiterId}`)
+        fetch(`https://hirequest-portel-1.onrender.com/recruiter/applicant/${recruiterId}`)
             .then(response => response.json())
             .then((data) => {
                 setApplicantsData(data);

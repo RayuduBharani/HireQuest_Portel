@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js",
-    "start": "node index.js",
-    "build": "npm install"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "author": "Rayudu Bharani",
   "license": "ISC",

@@ -50,7 +50,7 @@ export default function RecruiterForm() {
             companyDescription
           };
 
-          const response = await fetch("http://localhost:8000/onboard-recruiter", {
+          const response = await fetch("https://hirequest-portel-1.onrender.com/onboard-recruiter", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

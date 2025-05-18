@@ -18,9 +18,9 @@ export default function Jobs() {
       setLoading(true)
 
       try {
-        const response = await fetch(CookieData.role === "recruiter" ? "http://localhost:8000/getjob"
+        const response = await fetch(CookieData.role === "recruiter" ? "https://hirequest-portel-1.onrender.com/getjob"
           :
-          "http://localhost:8000/getAllJobs",
+          "https://hirequest-portel-1.onrender.com/getAllJobs",
           {
             headers: {
               "Authorization": `Bearer ${CookieData.token}`,

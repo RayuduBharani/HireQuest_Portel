@@ -23,7 +23,7 @@ export default function Activity() {
         }
 
         const cookieData = JSON.parse(cookie);
-        const response = await fetch("http://localhost:8000/activity", {
+        const response = await fetch("https://hirequest-portel-1.onrender.com/activity", {
           headers: {
             Authorization: `Bearer ${cookieData.token}`,
           },

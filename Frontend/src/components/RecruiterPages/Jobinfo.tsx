@@ -21,7 +21,7 @@ export default function Jobinfo() {
         async function fetchJobInfo() {
             try {
                 setIsLoading(true)
-                const response = await fetch(`http://localhost:8000/recruiter/postinfo/${id}`, {
+                const response = await fetch(`https://hirequest-portel-1.onrender.com/recruiter/postinfo/${id}`, {
                     headers: {
                         "Authorization": `Bearer ${CookieData?.token}`
                     }

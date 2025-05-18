@@ -101,7 +101,7 @@ function Feed(): JSX.Element {
         });
       }
 
-      const response = await fetch("http://localhost:8000/feed/post", {
+      const response = await fetch("https://hirequest-portel-1.onrender.com/feed/post", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -142,7 +142,7 @@ function Feed(): JSX.Element {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/feed/posts", {
+      const response = await fetch("https://hirequest-portel-1.onrender.com/feed/posts", {
         headers: {
           "Authorization": `Bearer ${CookieData?.token}`,
         },

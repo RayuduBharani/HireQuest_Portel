@@ -47,7 +47,7 @@ export default function Postjob() {
     if (cookie) {
       try {
         const CookieData: IcookieData = JSON.parse(cookie);
-        const response = await fetch("http://localhost:8000/postjob", {
+        const response = await fetch("https://hirequest-portel-1.onrender.com/postjob", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${CookieData.token}`,

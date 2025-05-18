@@ -32,7 +32,7 @@ export default function RecruiterAccountPage() {
     const [close , setClose] = useState(false)
 
     useEffect(() => {
-        fetch("http://localhost:8000/recruiter/Account", {
+        fetch("https://hirequest-portel-1.onrender.com/recruiter/Account", {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${CookieData?.token}`,

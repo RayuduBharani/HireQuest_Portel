@@ -37,7 +37,7 @@ export default function Companies() {
     setIsLoading(true);
     setError(null);
 
-    fetch("http://localhost:8000/companies")
+    fetch("https://hirequest-portel-1.onrender.com/companies")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch companies");

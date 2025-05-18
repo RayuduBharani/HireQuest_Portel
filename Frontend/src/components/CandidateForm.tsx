@@ -128,7 +128,7 @@ export default function CandidateForm() {
     if (cookie) {
       const CookieData: IcookieData = JSON.parse(cookie);
 
-      const response = await fetch("http://localhost:8000/onboard-candidate", {
+      const response = await fetch("https://hirequest-portel-1.onrender.com/onboard-candidate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

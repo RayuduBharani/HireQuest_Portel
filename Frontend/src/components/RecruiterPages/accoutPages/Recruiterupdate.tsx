@@ -29,7 +29,7 @@ const Recruiterupdate = () => {
         const token = localStorage.getItem('token')
         if (!token) {
           throw new Error('No authentication token found')
-        }        const response = await fetch('http://localhost:8000/recruiter/profile', {
+        }        const response = await fetch('https://hirequest-portel-1.onrender.com/recruiter/profile', {
           method: 'GET',
           headers: { 
             Authorization: `Bearer ${token}`
@@ -76,7 +76,7 @@ const Recruiterupdate = () => {
       const token = localStorage.getItem('token')
       if (!token) {
         throw new Error('No authentication token found')
-      }      const response = await fetch('http://localhost:8000/recruiter/userprofile', {
+      }      const response = await fetch('https://hirequest-portel-1.onrender.com/recruiter/userprofile', {
         method: 'PUT',
         headers: { 
           'Authorization': `Bearer ${token}`,

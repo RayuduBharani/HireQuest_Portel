@@ -11,7 +11,7 @@ export default function OAuth() {
         const Provider = new GoogleAuthProvider()
         const auth = getAuth(app)
         const result = await signInWithPopup(auth , Provider)
-        const response = await fetch('http://localhost:8000/google-auth', {
+        const response = await fetch('https://hirequest-portel-1.onrender.com/google-auth', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

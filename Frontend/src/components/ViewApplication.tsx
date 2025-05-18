@@ -18,7 +18,7 @@ export default function ViewApplication({ applicants }: { applicants: ICandidate
   async function HandleAcceptJob() {
     try {
       setIsAccepting(true);
-      const response = await fetch(`http://localhost:8000/recruiter/acceptJob/${applicants._id}`,{
+      const response = await fetch(`https://hirequest-portel-1.onrender.com/recruiter/acceptJob/${applicants._id}`,{
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
