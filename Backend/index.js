@@ -16,6 +16,10 @@ app.use(cors())
 
 // signIn 
 
+app.get("/", (req, res) => {
+    res.send("Server is Running")
+})
+
 app.post("/signup", async (req, res) => {
     await connectDb()
     const UserData = req.body
