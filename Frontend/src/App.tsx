@@ -21,25 +21,27 @@ export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const showNav = location.pathname === "/onboard";
-  useEffect(() => {
+  const showNav = location.pathname === "/onboard";  useEffect(() => {
     const cookie = Cookies.get('bharani');
+    const publicPaths = ['/sign-in', '/sign-up'];
+    
     if (cookie) {
       const cookieData = JSON.parse(cookie);
       if (cookieData.role == null) {
         navigate('/onboard');
       } 
       else if (cookieData.role != null) {
-        if (location.pathname === "/sign-in") {
-          navigate('/home');
-        }
-        if (location.pathname === "/sign-up") {
+        // If user is logged in and tries to access auth pages, redirect to home
+        if (publicPaths.includes(location.pathname)) {
           navigate('/home');
         }
       }
     } 
     else {
-      navigate('/sign-in');
+      // If user is not logged in and tries to access protected pages
+      if (!publicPaths.includes(location.pathname)) {
+        navigate('/sign-in');
+      }
     }
   }, [navigate, location.pathname]);
 
